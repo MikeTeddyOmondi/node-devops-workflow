@@ -1,0 +1,23 @@
+version: "3.6"
+services:
+   nginx:
+      image: nginx:stable-alpine
+   web_app:
+      build: .
+      environment:
+         - PORT=3000
+      env_file:
+         - ./.env
+      depends_on: 
+         - mongo
+   mongo:
+      image: mongo
+      environment:
+         - MONGO_INITDB_ROOT_USERNAME=dbadmin
+         - MONGO_INITDB_ROOT_PASSWORD=dbpassword
+      volumes:
+         - mongo-db:/data/db
+   redis:
+      image: redis
+volumes:
+   mongo-db:

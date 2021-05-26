@@ -1,0 +1,25 @@
+version: "3.6"
+services:
+   nginx:
+      ports:
+         - "3000:80"
+      volumes:
+         - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+   web_app:
+      build:
+         context: .
+         args:
+            NODE_ENV: development
+      volumes:
+         - ./:/src:ro
+         - /src/node_modules
+      environment:
+         - NODE_ENV=development
+         - MONGO_USER=dbadmin
+         - MONGO_PASSWORD=dbpassword
+         - SESSION_SECRET=sessionSecret
+      command: npm run dev
+   mongo:
+      environment:
+         - MONGO_INITDB_ROOT_USERNAME=dbadmin
+         - MONGO_INITDB_ROOT_PASSWORD=dbpassword
